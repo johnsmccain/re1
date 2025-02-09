@@ -226,23 +226,23 @@ const Dashboard = () => {
 
         <div className="flex gap-5 z-20 flex-col">
           <div className="w-full">
-            <p className="text-2xl py-4 text-white font-bold">User details</p>
-            <div className="bg-white w-full rounded-lg py-5 px-3 flex flex-col gap-5">
+            <p className="text-2xl py-4 text-white font-bold">Dashboard</p>
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3 flex flex-col gap-5">
               <div className="w-full gap-2 flex-col flex flex-wrap">
-                <div className="flex items-center gap-2">
-                  <p className="text-lg font-semibold">User ID:</p>
-                  <p className="text-lg ">{Number(userId)}</p>
+                <div className="flex items-center gap-2 ">
+                  <p className="text-base font-semibold text-[#00ff03]">User ID:</p>
+                  <p className="text-base text-white">{Number(userId)}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <p className="text-lg font-semibold">Wallet Address:</p>
-                  <p className="text-lg ">{address && address?.slice(0, 6)}...{address && address?.slice(-4)}</p>
+                <div className="flex items-center gap-2 ">
+                  <p className="text-base font-semibold text-[#00ff03] ">Wallet Address:</p>
+                  <p className="text-base text-white">{address && address?.slice(0, 6)}...{address && address?.slice(-4)}</p>
                 </div>
               </div>
             </div>
           </div>
           <div>
             <p className="text-2xl py-4 text-white font-bold">Purchase Slot</p>
-            <div className="bg-white w-full rounded-lg py-5 px-3 flex flex-col gap-5">
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3 flex flex-col gap-5">
               <div className="w-full gap-2 justify-evenly flex flex-wrap">
 
                 {packages.map((item, index) => (
@@ -259,40 +259,40 @@ const Dashboard = () => {
               </div>
 
 
-              <div className="flex bg-neutral-200 rounded-md p-2 justify-between">
-                <p>Total slot Purchased</p>
-                <p className="text-[#8f7c14]">${formatEther(parsedUserInfo.totalDeposit)}</p>
+              <div className="flex bg-[#021d18]  rounded-md p-2 justify-between">
+                <p className="text-[#00ff03]">Total slot Purchased</p>
+                <p className="text-white">${formatEther(parsedUserInfo.totalDeposit)}</p>
               </div>
               <button
                 onClick={handleApprove}
                 disabled={Number(parseEther(investmentAmount || "0")) === 0 || isAllowed || maxLevel}
-                className={`w-full py-2 rounded-lg text-lg font-semibold bg-primary ${Number(parseEther(investmentAmount || "0")) === 0 || isApprovePending || isRegisterPending || isUpgradePending || isAllowed || maxLevel ? "outline-none opacity-50 cursor-not-allowed " : isUpgradeError || isRegisterError ? "outline-none  bg-red-500 text-white" : "text-white cursor-pointer"}`}
+                className={`w-full py-2 rounded-lg text-base font-semibold bg-primary ${Number(parseEther(investmentAmount || "0")) === 0 || isApprovePending || isRegisterPending || isUpgradePending || isAllowed || maxLevel ? "outline-none opacity-50 cursor-not-allowed " : isUpgradeError || isRegisterError ? "outline-none  bg-red-500 text-white" : "text-white cursor-pointer"}`}
               >
                 {isApprovePending || isRegisterPending || isUpgradePending || isAllowed ? <span className="animate-pulse transition-all ease-in-out">Proccessing...</span> : maxLevel ? "Max Level" : `Approve ${investmentAmount} USDT`}
               </button>
 
-              <div className="flex bg-neutral-100 rounded-md p-2 justify-between">
-                <p>Total Missed Income</p>
-                <p className="text-gray-600">${formatEther(BigInt(getMissedIncome?.toString() || "0"))}</p>
+              <div className="flex bg-[#021d18] rounded-md p-2 justify-between">
+                <p className="text-[#00ff03]">Total Missed Income</p>
+                <p className="text-white">${formatEther(BigInt(getMissedIncome?.toString() || "0"))}</p>
               </div>
 
             </div>
           </div>
           <div className="">
             <p className="text-2xl py-4 text-white font-bold">My team</p>
-            <div className="bg-white w-full rounded-lg py-5 px-3">
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3">
               <div className="flex max-sm:flex-col gap-3 sm:justify-around">
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
-                  <p className="text-lg font-semibold my-auto">Total income earned</p>
-                  <p className="text-gray-700">${Number(29292)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
+                  <p className="text-base font-semibold my-auto text-[#00ff03]" >Total income earned</p>
+                  <p className="text-white">${Number(29292)}</p>
                 </div>
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
-                  <p className="text-lg font-semibold my-auto">total team members</p>
-                  <p className="text-gray-700">{Number(56)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
+                  <p className="text-base font-semibold my-auto  text-[#00ff03]">total team members</p>
+                  <p className="text-white">{Number(56)}</p>
                 </div>
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
-                  <p className="text-lg font-semibold my-auto">total team business</p>
-                  <p className="text-gray-700">${Number(26)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
+                  <p className="text-base font-semibold my-auto  text-[#00ff03]">total team business</p>
+                  <p className="text-white">${Number(26)}</p>
                 </div>
 
               </div>
@@ -300,7 +300,7 @@ const Dashboard = () => {
           </div>
           <div>
             <p className="text-2xl py-4  text-white font-bold">Referral link</p>
-            <div className="bg-white w-full rounded-lg py-5 px-3 flex flex-col md:flex-row gap-5">
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3 flex flex-col md:flex-row gap-5">
               <div className="w-full">
                 <input
                   type="text"
@@ -321,19 +321,19 @@ const Dashboard = () => {
           </div>
           <div className="">
             <p className="text-2xl py-4 text-white font-bold">My direct</p>
-            <div className="bg-white w-full rounded-lg py-5 px-3">
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3">
               <div className="flex flex-col gap-3">
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                  <p className="text-lg font-semibold my-auto">direct members:</p>
-                  <p className="text-gray-700">{Number(5)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
+                  <p className="text-base font-semibold my-auto text-[#00ff03]">direct members:</p>
+                  <p className="text-white">{Number(5)}</p>
                 </div>
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                  <p className="text-lg font-semibold my-auto">direct business:</p>
-                  <p className="text-gray-700">${Number(6)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
+                  <p className="text-base font-semibold my-auto text-[#00ff03]">direct business:</p>
+                  <p className="text-white">${Number(6)}</p>
                 </div>
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                  <p className="text-lg font-semibold my-auto">referral income earned:</p>
-                  <p className="text-gray-700">${Number(657)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
+                  <p className="text-base font-semibold my-auto text-[#00ff03]">referral income earned:</p>
+                  <p className="text-white">${Number(657)}</p>
                 </div>
 
               </div>
@@ -342,15 +342,15 @@ const Dashboard = () => {
 
           <div className="">
             <p className="text-2xl py-4 text-white font-bold">Level income</p>
-            <div className="bg-white w-full rounded-lg py-5 px-3">
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3">
               <div className="flex flex-col gap-3">
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                  <p className="text-lg font-semibold my-auto">Total level income earned:</p>
-                  <p className="text-gray-700">${Number(6)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
+                  <p className="text-base font-semibold my-auto text-[#00ff03] ">Total level income earned:</p>
+                  <p className="text-white">${Number(6)}</p>
                 </div>
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                  <p className="text-lg font-semibold my-auto">Available level income: ${Number(56)}</p>
-                  <button className="rounded-lg border-2 border-primary text-gray-700 py-1 px-3 font-semibold">Claim</button>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
+                  <p className="text-base font-semibold my-auto text-[#00ff03] ">Available level income: ${Number(56)}</p>
+                  <button className="rounded-lg border-2 border-primary text-white py-1 px-3 font-semibold">Claim</button>
                 </div>
 
 
@@ -360,11 +360,11 @@ const Dashboard = () => {
 
           <div className="">
             <p className="text-2xl py-4 text-white font-bold">Autopool income</p>
-            <div className="bg-white w-full rounded-lg py-5 px-3">
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3">
               <div className="flex flex-col gap-3">
-                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                  <p className="text-lg font-semibold my-auto">Total Referral income earned:</p>
-                  <p className="text-gray-700">${Number(6)}</p>
+                <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
+                  <p className="text-base font-semibold my-auto text-[#00ff03]">Total Referral income earned:</p>
+                  <p className="text-white">${Number(6)}</p>
                 </div>
               </div>
             </div>
@@ -374,19 +374,19 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <p className="text-2xl py-4 text-white font-bold">Available pool income</p>
             </div>
-            <div className="bg-white w-full rounded-lg py-5 px-3">
+            <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3">
               <div className="flex flex-col gap-3">
                 {getDividendIncome?.map((poolBalance: any, index: number) => (
 
-                  <div key={index} className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                    <p className="text-lg font-semibold my-auto">Pool {index + 1}</p>
-                    <p className="text-gray-700">
+                  <div key={index} className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
+                    <p className="text-base font-semibold my-auto text-[#00ff03]">Pool {index + 1}</p>
+                    <p className="text-gray-300">
                       ${formatEther(poolBalance)} / ${userAvailableToClaimed && formatEther(userAvailableToClaimed[index] as any || "0")}
                     </p>
                     <button
                       onClick={() => checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0 ? claimDividend(BigInt(index)) : null}
                       disabled={checkPoolEligibility && Number(checkPoolEligibility[index]) === 0}
-                      className="rounded-lg border-2 border-primary text-gray-700 py-1 px-3 font-semibold"
+                      className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold"
                     >
                       {checkPoolEligibility && Number(checkPoolEligibility[index]) === 0 ? 'Not Eligible' : checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0 ? 'Claim' : 'Eligible'}
                     </button>
@@ -399,13 +399,13 @@ const Dashboard = () => {
           {/* <div>
             <p className="text-2xl py-4  text-white font-bold">Income claim</p>
             <div className="flex flex-col gap-3">
-              <div className=" bg-white w-full rounded-lg py-5 px-3 flex flex-col gap-5 ">
+              <div className=" bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3 flex flex-col gap-5 ">
                 <div className="flex justify-between">
-                  <p className="font-bold text-lg">Total income claimed</p>
+                  <p className="font-bold text-base">Total income claimed</p>
                   <p className="text-gray-700 ml-1">${formatEther(parsedUserInfo.levelIncome)}</p>
                 </div>
                 <div className="flex justify-between">
-                  <p className="font-bold text-lg"> TotalIncome to claim</p>
+                  <p className="font-bold text-base"> TotalIncome to claim</p>
                   <p className="text-gray-700 ml-1">${formatEther(availableLevelIncomeToClaim.data || 0n)}</p>
                 </div>
               </div>

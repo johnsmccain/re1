@@ -16,6 +16,8 @@ function App() {
   return (
     <>
       <Navbar />
+      <div className="overflow-y-scroll h-screen">
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={isConnected ?<Dashboard /> : <Home/>} />
@@ -23,6 +25,7 @@ function App() {
         <Route path="/activities" element={isConnected ?<InvestmentsList /> : <Home/>} />
       </Routes>
       <Toaster />
+      </div>
 
     </>
   )
