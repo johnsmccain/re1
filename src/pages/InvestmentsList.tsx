@@ -17,7 +17,7 @@ export function InvestmentsList() {
   const { address } = useAccount()
   const { data: userId } = useUserId(address as `0x${string}`)
   const { data: userInfo } = useUserInfo(userId as bigint)
-  const parsedUserInfo = parseUserInfo([userInfo][0] || [])
+  const parsedUserInfo = parseUserInfo([userInfo][0] as any || [])
   const { isConnected } = useAccount();
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
