@@ -34,21 +34,21 @@ const Dashboard = () => {
   const [maxLevel, setMaxLevel] = useState((Number(parsedUserInfo.level)) === 12)
 
   // console.log(maxLevel)
-  const [investmentAmount, setInvestmentAmount] = useState<string>(maxLevel ? packages[packageId -1] : packages[packageId]);
+  const [investmentAmount, setInvestmentAmount] = useState<string>(maxLevel ? packages[packageId - 1] : packages[packageId]);
   const { approve, isPending: isApprovePending, data: approveTxHash, isError: isApproveError, } = useApprove(rich5WorldConfig.address, parseEther(investmentAmount || "0"));
-  const { register, isPending: isRegisterPending, isError: isRegisterError, data: registerTxHash } = useRegister(BigInt(referralCode), address as `0x${string}`, parseEther(investmentAmount||"0"));
+  const { register, isPending: isRegisterPending, isError: isRegisterError, data: registerTxHash } = useRegister(BigInt(referralCode), address as `0x${string}`, parseEther(investmentAmount || "0"));
   const { data: getDividendIncome } = useGetDividendIncome(userId as bigint);
   // console.log(packages, packageId, packages[packageId])
   const { data: getMissedIncome } = useUserMissedIncome(userId as bigint)
   // const { data: userPoolRank } = useUserPoolRank(userId as bigint)
   const { data: checkPoolEligibility } = useCheckPoolEligibility(userId as bigint)
-  const availableLevelIncomeToClaim =  useAvailableLevelIncomeToClaim(userId as bigint)
+  const availableLevelIncomeToClaim = useAvailableLevelIncomeToClaim(userId as bigint)
   const { data: userAvailableToClaim1 } = useUserAvailableToClaim(userId as bigint, BigInt("0"))
   const { data: userAvailableToClaim2 } = useUserAvailableToClaim(userId as bigint, BigInt("1"))
   const { data: userAvailableToClaim3 } = useUserAvailableToClaim(userId as bigint, BigInt("2"))
   const { data: userAvailableToClaim4 } = useUserAvailableToClaim(userId as bigint, BigInt("3"))
   const { data: userAvailableToClaim5 } = useUserAvailableToClaim(userId as bigint, BigInt("4"))
- 
+
   const { claimDividend, data: claimDividendTxHash } = useClaimDividen()
   // Get the full URL
   const getfullURL = `${window.location.origin}?referral=${parsedUserInfo.id}`;
@@ -58,17 +58,17 @@ const Dashboard = () => {
   }
   const handleInvest = async () => {
     Number(parsedUserInfo.level) >= 1 ? await upgradeLevel(BigInt(userId as bigint), BigInt("1"), parseEther(investmentAmount || "0")) : handleRegister()
-    
+
   };
-  
+
   const [isAllowed, setIsAllowed] = useState(false);
   const [userAvailableToClaimed, setuserAvailableToClaimed] = useState([userAvailableToClaim1, userAvailableToClaim2, userAvailableToClaim3, userAvailableToClaim4]);
   /**
    * Approves the ERC20 contract to spend the user's investment amount
   */
- const handleApprove = () => {
-   setIsAllowed(true)
-   approve();
+  const handleApprove = () => {
+    setIsAllowed(true)
+    approve();
   }
   const handleCopy = () => {
     navigator.clipboard.writeText(getfullURL).then(() => {
@@ -84,13 +84,13 @@ const Dashboard = () => {
     }
   }, [storedCode])
 
-// console.log(referralCode)
+  // console.log(referralCode)
 
   // console.log(`approveTransactionConfirmations ${approveTransactionisFetched} transactionTransactionConfirmations ${transactionisFetched}`)
   const { isFetched: registerWaitForTransactionReceipt } = useWaitForTransactionReceipt({
     hash: registerTxHash,
   })
-  const { isFetched:  upgradeWaitForTransactionReceipt} = useWaitForTransactionReceipt({
+  const { isFetched: upgradeWaitForTransactionReceipt } = useWaitForTransactionReceipt({
     hash: upgradeTxHash,
   })
   const { isFetched: approveWaitForTransactionReceipt } = useWaitForTransactionReceipt({
@@ -108,7 +108,7 @@ const Dashboard = () => {
         toast.success("Registration successful")
       } else if (upgradeWaitForTransactionReceipt) {
         toast.success("Upgrading successful")
-      } 
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -116,7 +116,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-    if (approveWaitForTransactionReceipt) {
+      if (approveWaitForTransactionReceipt) {
         toast.success("Approval successful")
       }
     }, 1000);
@@ -135,7 +135,7 @@ const Dashboard = () => {
     }
   }, [isRegisterError, isApproveError])
 
-// console.log(parsedUserInfo.levelIncome)
+  // console.log(parsedUserInfo.levelIncome)
   const userInfomation = async () => {
     try {
       const res = await readContract(config, {
@@ -155,9 +155,9 @@ const Dashboard = () => {
       const c = parseUserInfo(e as any || [])
       if (c.level === BigInt(packages.length)) {
         setPackageId(Number(c.level) - 1)
-        setInvestmentAmount(packages[Number(c.level)-1])
+        setInvestmentAmount(packages[Number(c.level) - 1])
         setCurrentLevel(Number(c.level) - 1)
-      }else if(c.level < BigInt(packages.length)) {
+      } else if (c.level < BigInt(packages.length)) {
         setPackageId(Number(c.level))
         setInvestmentAmount(packages[Number(c.level)])
         setCurrentLevel(Number(c.level))
@@ -178,8 +178,8 @@ const Dashboard = () => {
       if (c.level === BigInt(packages.length)) {
         setPackageId(Number(c.level) - 1)
         setCurrentLevel(Number(c.level) - 1)
-        setInvestmentAmount(packages[Number(c.level)-1])
-      }else if(c.level < BigInt(packages.length)) {
+        setInvestmentAmount(packages[Number(c.level) - 1])
+      } else if (c.level < BigInt(packages.length)) {
         setPackageId(Number(c.level))
         setInvestmentAmount(packages[Number(c.level)])
         setCurrentLevel(Number(c.level))
@@ -192,20 +192,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if(isUpgradeError || isRegisterError){
+      if (isUpgradeError || isRegisterError) {
         setIsAllowed(false)
       }
     }, 1000);
 
     return () => clearTimeout(timer);
-  },[isUpgradeError, isRegisterError])
-  
+  }, [isUpgradeError, isRegisterError])
+
   useEffect(() => {
     if (approveWaitForTransactionReceipt) {
       handleInvest()
     }
   }, [approveWaitForTransactionReceipt]);
-// console.log(getDividendIncome)
+  // console.log(getDividendIncome)
   return (
     <div className="">
       <div className="px-3 md:px-28 py-20 flex flex-col  pt-20">
@@ -225,6 +225,21 @@ const Dashboard = () => {
 
 
         <div className="flex gap-5 z-20 flex-col">
+          <div className="w-full">
+            <p className="text-2xl py-4 text-white font-bold">User details</p>
+            <div className="bg-white w-full rounded-lg py-5 px-3 flex flex-col gap-5">
+              <div className="w-full gap-2 flex-col flex flex-wrap">
+                <div className="flex items-center gap-2">
+                  <p className="text-lg font-semibold">User ID:</p>
+                  <p className="text-lg ">{Number(userId)}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <p className="text-lg font-semibold">Wallet Address:</p>
+                  <p className="text-lg ">{address && address?.slice(0, 6)}...{address && address?.slice(-4)}</p>
+                </div>
+              </div>
+            </div>
+          </div>
           <div>
             <p className="text-2xl py-4 text-white font-bold">Purchase Slot</p>
             <div className="bg-white w-full rounded-lg py-5 px-3 flex flex-col gap-5">
@@ -234,7 +249,7 @@ const Dashboard = () => {
                   <button
                     key={index}
                     onClick={() => { setInvestmentAmount(item); setPackageId(index + 1); }}
-                    disabled={(Number(parsedUserInfo.level)) !== (index) || maxLevel }
+                    disabled={(Number(parsedUserInfo.level)) !== (index) || maxLevel}
                     className={`py-2 px-4 rounded-md  font-semibold ${currentLevel === (index) ? 'bg-primary cursor-pointer text-white' : currentLevel > (index) ? 'bg-gray-300 text-gray-500 cursor-not-allowed bg-opacity-40' : 'bg-gray-400 cursor-not-allowed text-white'
                       }`}
                   >
@@ -242,67 +257,47 @@ const Dashboard = () => {
                   </button>
                 ))}
               </div>
+
+
               <div className="flex bg-neutral-200 rounded-md p-2 justify-between">
                 <p>Total slot Purchased</p>
                 <p className="text-[#8f7c14]">${formatEther(parsedUserInfo.totalDeposit)}</p>
               </div>
               <button
                 onClick={handleApprove}
-                disabled={Number(parseEther(investmentAmount|| "0")) === 0 || isAllowed || maxLevel} 
-                className={`w-full py-2 rounded-lg text-lg font-semibold bg-primary ${Number(parseEther(investmentAmount|| "0")) === 0 || isApprovePending || isRegisterPending || isUpgradePending || isAllowed || maxLevel ? "outline-none opacity-50 cursor-not-allowed " : isUpgradeError || isRegisterError ? "outline-none  bg-red-500 text-white" : "text-white cursor-pointer"}`}
+                disabled={Number(parseEther(investmentAmount || "0")) === 0 || isAllowed || maxLevel}
+                className={`w-full py-2 rounded-lg text-lg font-semibold bg-primary ${Number(parseEther(investmentAmount || "0")) === 0 || isApprovePending || isRegisterPending || isUpgradePending || isAllowed || maxLevel ? "outline-none opacity-50 cursor-not-allowed " : isUpgradeError || isRegisterError ? "outline-none  bg-red-500 text-white" : "text-white cursor-pointer"}`}
               >
-                {isApprovePending || isRegisterPending || isUpgradePending || isAllowed ? <span className="animate-pulse transition-all ease-in-out">Proccessing...</span> : maxLevel? "Max Level" : `Approve ${investmentAmount} USDT`}
+                {isApprovePending || isRegisterPending || isUpgradePending || isAllowed ? <span className="animate-pulse transition-all ease-in-out">Proccessing...</span> : maxLevel ? "Max Level" : `Approve ${investmentAmount} USDT`}
               </button>
 
               <div className="flex bg-neutral-100 rounded-md p-2 justify-between">
                 <p>Total Missed Income</p>
-                <p className="text-gray-600">${formatEther(BigInt(getMissedIncome?.toString()|| "0"))}</p>
+                <p className="text-gray-600">${formatEther(BigInt(getMissedIncome?.toString() || "0"))}</p>
               </div>
-            
+
             </div>
           </div>
-          <div>
-            <div className="flex items-center justify-between">
-              <p className="text-2xl py-4 text-white font-bold">Available pool income</p>
-            </div>
+          <div className="">
+            <p className="text-2xl py-4 text-white font-bold">My team</p>
             <div className="bg-white w-full rounded-lg py-5 px-3">
-              <div className="flex flex-col gap-3">
-                {getDividendIncome?.map((poolBalance: any, index:number) => (
+              <div className="flex max-sm:flex-col gap-3 sm:justify-around">
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
+                  <p className="text-lg font-semibold my-auto">Total income earned</p>
+                  <p className="text-gray-700">${Number(29292)}</p>
+                </div>
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
+                  <p className="text-lg font-semibold my-auto">total team members</p>
+                  <p className="text-gray-700">{Number(56)}</p>
+                </div>
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
+                  <p className="text-lg font-semibold my-auto">total team business</p>
+                  <p className="text-gray-700">${Number(26)}</p>
+                </div>
 
-                  <div key={index} className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                    <p className="text-lg font-semibold my-auto">Pool {index + 1}</p>
-                    <p className="text-gray-700">
-                      ${formatEther(poolBalance)} / ${userAvailableToClaimed && formatEther(userAvailableToClaimed[index] as any || "0")}
-                    </p>
-                    <button
-                      onClick={() => checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0  ? claimDividend(BigInt(index)): null}
-                      disabled={checkPoolEligibility && Number(checkPoolEligibility[index]) === 0}
-                      className="rounded-lg border-2 border-primary text-gray-700 py-1 px-3 font-semibold"
-                    >
-                      {checkPoolEligibility && Number(checkPoolEligibility[index]) === 0 ? 'Not Eligible' : checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0 ? 'Claim' : 'Eligible'}
-                    </button>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
-
-          <div>
-            <p className="text-2xl py-4  text-white font-bold">Income claim</p>
-            <div className="flex flex-col gap-3">
-              <div className=" bg-white w-full rounded-lg py-5 px-3 flex flex-col gap-5 ">
-                <div className="flex justify-between">
-                  <p className="font-bold text-lg">Total income claimed</p>
-                  <p className="text-gray-700 ml-1">${formatEther(parsedUserInfo.levelIncome)}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-bold text-lg"> TotalIncome to claim</p>
-                  <p className="text-gray-700 ml-1">${formatEther(availableLevelIncomeToClaim.data || 0n)}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div>
             <p className="text-2xl py-4  text-white font-bold">Referral link</p>
             <div className="bg-white w-full rounded-lg py-5 px-3 flex flex-col md:flex-row gap-5">
@@ -324,6 +319,98 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+          <div className="">
+            <p className="text-2xl py-4 text-white font-bold">My direct</p>
+            <div className="bg-white w-full rounded-lg py-5 px-3">
+              <div className="flex flex-col gap-3">
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
+                  <p className="text-lg font-semibold my-auto">direct members:</p>
+                  <p className="text-gray-700">{Number(5)}</p>
+                </div>
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
+                  <p className="text-lg font-semibold my-auto">direct business:</p>
+                  <p className="text-gray-700">${Number(6)}</p>
+                </div>
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
+                  <p className="text-lg font-semibold my-auto">referral income earned:</p>
+                  <p className="text-gray-700">${Number(657)}</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div className="">
+            <p className="text-2xl py-4 text-white font-bold">Level income</p>
+            <div className="bg-white w-full rounded-lg py-5 px-3">
+              <div className="flex flex-col gap-3">
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
+                  <p className="text-lg font-semibold my-auto">Total level income earned:</p>
+                  <p className="text-gray-700">${Number(6)}</p>
+                </div>
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
+                  <p className="text-lg font-semibold my-auto">Available level income:</p>
+                  <p className="text-gray-700">${Number(56)}</p>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+          <div className="">
+            <p className="text-2xl py-4 text-white font-bold">Autopool income</p>
+            <div className="bg-white w-full rounded-lg py-5 px-3">
+              <div className="flex flex-col gap-3">
+                <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
+                  <p className="text-lg font-semibold my-auto">Total Referral income earned:</p>
+                  <p className="text-gray-700">${Number(6)}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between">
+              <p className="text-2xl py-4 text-white font-bold">Available pool income</p>
+            </div>
+            <div className="bg-white w-full rounded-lg py-5 px-3">
+              <div className="flex flex-col gap-3">
+                {getDividendIncome?.map((poolBalance: any, index: number) => (
+
+                  <div key={index} className="bg-neutral-200 flex justify-between p-2 rounded-lg">
+                    <p className="text-lg font-semibold my-auto">Pool {index + 1}</p>
+                    <p className="text-gray-700">
+                      ${formatEther(poolBalance)} / ${userAvailableToClaimed && formatEther(userAvailableToClaimed[index] as any || "0")}
+                    </p>
+                    <button
+                      onClick={() => checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0 ? claimDividend(BigInt(index)) : null}
+                      disabled={checkPoolEligibility && Number(checkPoolEligibility[index]) === 0}
+                      className="rounded-lg border-2 border-primary text-gray-700 py-1 px-3 font-semibold"
+                    >
+                      {checkPoolEligibility && Number(checkPoolEligibility[index]) === 0 ? 'Not Eligible' : checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0 ? 'Claim' : 'Eligible'}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* <div>
+            <p className="text-2xl py-4  text-white font-bold">Income claim</p>
+            <div className="flex flex-col gap-3">
+              <div className=" bg-white w-full rounded-lg py-5 px-3 flex flex-col gap-5 ">
+                <div className="flex justify-between">
+                  <p className="font-bold text-lg">Total income claimed</p>
+                  <p className="text-gray-700 ml-1">${formatEther(parsedUserInfo.levelIncome)}</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="font-bold text-lg"> TotalIncome to claim</p>
+                  <p className="text-gray-700 ml-1">${formatEther(availableLevelIncomeToClaim.data || 0n)}</p>
+                </div>
+              </div>
+            </div>
+          </div> */}
         </div>
 
       </div>
