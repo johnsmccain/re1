@@ -9,7 +9,7 @@ import {
   useUserId,
   useUserInfo,
   useUserMissedIncome,
-  useAvailableLevelIncomeToClaim
+  // useAvailableLevelIncomeToClaim
 } from "../hooks/useContract";
 import { useEffect, useState } from "react";
 import { useApprove } from "../hooks/useERC20Contract";
@@ -42,7 +42,7 @@ const Dashboard = () => {
   const { data: getMissedIncome } = useUserMissedIncome(userId as bigint)
   // const { data: userPoolRank } = useUserPoolRank(userId as bigint)
   const { data: checkPoolEligibility } = useCheckPoolEligibility(userId as bigint)
-  const availableLevelIncomeToClaim = useAvailableLevelIncomeToClaim(userId as bigint)
+  // const availableLevelIncomeToClaim = useAvailableLevelIncomeToClaim(userId as bigint)
   const { data: userAvailableToClaim1 } = useUserAvailableToClaim(userId as bigint, BigInt("0"))
   const { data: userAvailableToClaim2 } = useUserAvailableToClaim(userId as bigint, BigInt("1"))
   const { data: userAvailableToClaim3 } = useUserAvailableToClaim(userId as bigint, BigInt("2"))
@@ -349,8 +349,8 @@ const Dashboard = () => {
                   <p className="text-gray-700">${Number(6)}</p>
                 </div>
                 <div className="bg-neutral-200 flex justify-between p-2 rounded-lg">
-                  <p className="text-lg font-semibold my-auto">Available level income:</p>
-                  <p className="text-gray-700">${Number(56)}</p>
+                  <p className="text-lg font-semibold my-auto">Available level income: ${Number(56)}</p>
+                  <button className="rounded-lg border-2 border-primary text-gray-700 py-1 px-3 font-semibold">Claim</button>
                 </div>
 
 

@@ -3,7 +3,7 @@ import { MenuIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
-
+import logo from "../assets/Rich5world (1).png"
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -14,11 +14,12 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 w-full flex justify-between py-3 px-3 md:py-4 md:px-28 backdrop-blur-md z-40 ">
       <div className="my-auto">
-        <div className="text-2xl md:text-4xl my-auto font-bold">
+        {/* <div className="text-2xl md:text-4xl my-auto font-bold">
           <span className="text-white">Rich</span>
           <span className="text-primary">5</span>
           <span className="text-white">World</span>
-        </div>
+        </div> */}
+        <img src={logo} alt="logo" className="h-14" />
       </div>{
         isConnected &&
         <div className="flex gap-3 flex-wrap max-sm:hidden">
