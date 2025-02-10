@@ -79,7 +79,7 @@ const Home = () => {
 
         {/* ========= FOOTER ======== */}
         <div className="flex w-full text-center absolute bottom-0 left-0 justify-center">
-          <p className="text-primary text-sm">&copy; {new Date().getFullYear()} ByForex. All rights reserved.</p>
+          <p className="text-primary text-sm">&copy; {new Date().getFullYear()} Rich 5 World. All rights reserved.</p>
         </div>
       </div>
 

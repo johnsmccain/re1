@@ -9,7 +9,7 @@ import {
   useUserId,
   useUserInfo,
   useUserMissedIncome,
-  // useAvailableLevelIncomeToClaim
+  useAvailableLevelIncomeToClaim
 } from "../hooks/useContract";
 import { useEffect, useState } from "react";
 import { useApprove } from "../hooks/useERC20Contract";
@@ -21,6 +21,7 @@ import { rich5WorldConfig } from "../abi";
 import { readContract } from "wagmi/actions";
 import { config } from "../utils/wagmi";
 const packages = ["25", "50", "100", "200", "500", "1000", "2500", "5000"]
+
 const Dashboard = () => {
 
   const [referralCode, setReferralCode] = useState("1000");
@@ -42,7 +43,7 @@ const Dashboard = () => {
   const { data: getMissedIncome } = useUserMissedIncome(userId as bigint)
   // const { data: userPoolRank } = useUserPoolRank(userId as bigint)
   const { data: checkPoolEligibility } = useCheckPoolEligibility(userId as bigint)
-  // const availableLevelIncomeToClaim = useAvailableLevelIncomeToClaim(userId as bigint)
+  const {data: availableLevelIncomeToClaim} = useAvailableLevelIncomeToClaim(userId as bigint)
   const { data: userAvailableToClaim1 } = useUserAvailableToClaim(userId as bigint, BigInt("0"))
   const { data: userAvailableToClaim2 } = useUserAvailableToClaim(userId as bigint, BigInt("1"))
   const { data: userAvailableToClaim3 } = useUserAvailableToClaim(userId as bigint, BigInt("2"))
@@ -83,6 +84,7 @@ const Dashboard = () => {
       setReferralCode(JSON.parse(storedCode))
     }
   }, [storedCode])
+  console.log(availableLevelIncomeToClaim)
 
   // console.log(referralCode)
 
@@ -284,15 +286,15 @@ const Dashboard = () => {
               <div className="flex max-sm:flex-col gap-3 sm:justify-around">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className="text-base font-semibold my-auto text-[#00ff03]" >Total income earned</p>
-                  <p className="text-white">${Number(29292)}</p>
+                  <p className="text-white">${formatEther(userInfo?.[9] as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className="text-base font-semibold my-auto  text-[#00ff03]">total team members</p>
-                  <p className="text-white">{Number(56)}</p>
+                  <p className="text-white">{Number(userInfo?.[8] as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className="text-base font-semibold my-auto  text-[#00ff03]">total team business</p>
-                  <p className="text-white">${Number(26)}</p>
+                  <p className="text-white">${formatEther(userInfo?.[7] as bigint || 0n)}</p>
                 </div>
 
               </div>
@@ -324,18 +326,17 @@ const Dashboard = () => {
             <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3">
               <div className="flex flex-col gap-3">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
-                  <p className="text-base font-semibold my-auto text-[#00ff03]">direct members:</p>
-                  <p className="text-white">{Number(5)}</p>
+                  <p className="text-base font-semibold my-auto text-[#00ff03]">Direct members:</p>
+                  <p className="text-white">{Number(userInfo?.[6])}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
-                  <p className="text-base font-semibold my-auto text-[#00ff03]">direct business:</p>
-                  <p className="text-white">${Number(6)}</p>
+                  <p className="text-base font-semibold my-auto text-[#00ff03]">Direct business:</p>
+                  <p className="text-white">${formatEther(userInfo?.[7] as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
-                  <p className="text-base font-semibold my-auto text-[#00ff03]">referral income earned:</p>
-                  <p className="text-white">${Number(657)}</p>
+                  <p className="text-base font-semibold my-auto text-[#00ff03]">Referral income earned:</p>
+                  <p className="text-white">${formatEther(userInfo?.[10] as bigint || 0n)}</p>
                 </div>
-
               </div>
             </div>
           </div>
@@ -346,11 +347,11 @@ const Dashboard = () => {
               <div className="flex flex-col gap-3">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className="text-base font-semibold my-auto text-[#00ff03] ">Total level income earned:</p>
-                  <p className="text-white">${Number(6)}</p>
+                  <p className="text-white">${formatEther(userInfo?.[11] as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
-                  <p className="text-base font-semibold my-auto text-[#00ff03] ">Available level income: ${Number(56)}</p>
-                  <button className="rounded-lg border-2 border-primary text-white py-1 px-3 font-semibold">Claim</button>
+                  <p className="text-base font-semibold my-auto text-[#00ff03] ">Available level income: <span className="text-[#ffffff]">${formatEther(availableLevelIncomeToClaim || 0n)}</span></p>
+                  {availableLevelIncomeToClaim > 0? <button className="rounded-lg border-2 border-primary text-white py-1 px-3 font-semibold">Claim</button> : <button className="rounded-lg border-2 border-primary text-white py-1 px-3 font-semibold">Not Eligible</button>}
                 </div>
 
 
@@ -364,7 +365,7 @@ const Dashboard = () => {
               <div className="flex flex-col gap-3">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className="text-base font-semibold my-auto text-[#00ff03]">Total Referral income earned:</p>
-                  <p className="text-white">${Number(6)}</p>
+                  <p className="text-white">${formatEther(userInfo?.[7] as bigint || 0n)}</p>
                 </div>
               </div>
             </div>

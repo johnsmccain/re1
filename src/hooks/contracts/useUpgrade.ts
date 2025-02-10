@@ -4,12 +4,12 @@ export const useUpgrade = () => {
     const { writeContract, isSuccess, isPending, isError,failureReason,error, data, status} = useWriteContract()
     // useWaitForTransactionReceipt()
     const upgrade = async (_id: bigint, _lvls: bigint, amt: bigint) => {
+        console.log(_id, _lvls, amt)
         writeContract({
             address: rich5WorldConfig.address as `0x${string}`,
             abi: rich5WorldConfig.abi,
             functionName: "upgrade",
             args: [_id, _lvls, amt],
-
         });
     };
 
