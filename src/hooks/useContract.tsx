@@ -12,6 +12,7 @@ export { useUserMissedIncome } from './contracts/useUserMissedIncome';
 export { useRegister } from './contracts/useRegister';
 export { useUpgrade } from './contracts/useUpgrade';
 export { useClaimDividend as useClaimDividen } from './contracts/useClaimDividend';
+export { useClaimLevelDividend } from './contracts/useClaimLevelIncome';
 export { useGetDirectTeamUsers } from './contracts/useDirectTeamUsers';
 export { useGetRecentActivities } from './contracts/useRecentActivities';
 export { useUserAvailableToClaim } from './contracts/useUserAvailableToClaim';

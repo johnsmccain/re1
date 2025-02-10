@@ -25,7 +25,7 @@ const Navbar = () => {
         <div className="flex gap-3 flex-wrap max-sm:hidden">
           <button onClick={() => navigate('/dashboard')} className="my-auto hover:text-primary transition-colors text-white cursor-pointer">Dashboard</button>
           <button onClick={() => navigate('/activities')} className="my-auto hover:text-primary transition-colors text-white cursor-pointer">Activities</button>
-          <button onClick={() => navigate('/referals')} className="my-auto hover:text-primary transition-colors text-white cursor-pointer">Referals</button>
+          <button onClick={() => navigate('/referals')} className="my-auto hover:text-primary transition-colors text-white cursor-pointer">Referrals</button>
         </div>}
       <div className="gap-2 flex h-[20px]">
         <ConnectButton />
