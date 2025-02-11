@@ -71,8 +71,8 @@ export function InvestmentsList() {
                   : Number(referral.mode) === 1
                   ? 'Upgrade'
                   : Number(referral.mode) === 2
-                  ? 'Level Income'
-                  : 'Pool Income'}
+                  ? 'Direct Income'
+                  : 'Level Income'}
               </td>
             </tr>
           ))}
