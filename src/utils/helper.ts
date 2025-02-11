@@ -1,5 +1,19 @@
 import { FinancialData, IncomeData, UserInfo } from "../types";
 
+export const calculateIncome = (totalTeam: number, getMissedIncome: number) => {
+  const userBalance = totalTeam; // Convert from BigInt to string number
+  const missedIncome = getMissedIncome; // Ensure it's a valid BigInt before formatting
+
+  // Convert string numbers to floats for calculations
+  const userBalanceHalf = userBalance / 2;
+  const fiftyPercent = userBalanceHalf * 0.5; // 50% of (userBalance / 2)
+  const result = fiftyPercent - missedIncome;
+
+  return result;
+};
+
+
+
 export function parseUserInfo(data: Array<any>): UserInfo {
   if (!Array.isArray(data) || data.length < 12) {
     if (!Array.isArray(data) || data.length < 12) {

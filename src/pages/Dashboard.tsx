@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { useApprove } from "../hooks/useERC20Contract";
 import { formatEther, parseEther } from "viem";
-import { parseUserInfo } from "../utils/helper";
+import { calculateIncome, parseUserInfo } from "../utils/helper";
 import toast from "react-hot-toast";
 // import { convertTimestampToDate } from "../utils";
 import { rich5WorldConfig } from "../abi";
@@ -34,6 +34,7 @@ const Dashboard = () => {
   // const parsedUserInfo = parseUserInfo([userInfo][0] || [])
   const [parsedUserInfo, setParsedUserInfo] = useState(parseUserInfo([userInfo][0] as any || []));
   const [packageId, setPackageId] = useState<number>((Number(parsedUserInfo.level)));
+  const [referralIncome, setReferralIncome] = useState<number>(0);
   const [maxLevel, setMaxLevel] = useState((Number(parsedUserInfo.level)) === 12)
 
   // console.log(maxLevel)
@@ -191,10 +192,14 @@ const Dashboard = () => {
       }
       setParsedUserInfo(c);
       setIsAllowed(false)
+    
       setMaxLevel((Number(c.level)) === 12);
     })
+
+    setReferralIncome(calculateIncome(Number(formatEther(userInfo?.[7] as bigint || 0n)), Number(formatEther(BigInt(getMissedIncome?.toString() || "0")))))
   }, [registerWaitForTransactionReceipt, upgradeWaitForTransactionReceipt]);
 
+  console.log(referralCode)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isUpgradeError || isRegisterError) {
@@ -330,7 +335,7 @@ const Dashboard = () => {
               <div className="flex flex-col gap-3">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className=" font-semibold my-auto text-[#00ff03]">Direct members:</p>
-                  <p className="text-white">{Number(userInfo?.[6])}</p>
+                  <p className="text-white">{Number(userInfo?.[6]) || 0}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className=" font-semibold my-auto text-[#00ff03]">Direct business:</p>
@@ -338,7 +343,7 @@ const Dashboard = () => {
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className=" font-semibold my-auto text-[#00ff03]">Referral income earned:</p>
-                  <p className="text-white">${formatEther(userInfo?.[10] as bigint || 0n)}</p>
+                  <p className="text-white">${referralIncome}</p>
                 </div>
               </div>
             </div>
