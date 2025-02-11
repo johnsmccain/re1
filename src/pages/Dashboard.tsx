@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   // console.log(maxLevel)
   const [investmentAmount, setInvestmentAmount] = useState<string>(maxLevel ? packages[packageId - 1] : packages[packageId]);
-  const { approve, isPending: isApprovePending, data: approveTxHash, isError: isApproveError, } = useApprove(rich5WorldConfig.address, parseEther(investmentAmount + 1 || "0"));
+  const { approve, isPending: isApprovePending, data: approveTxHash, isError: isApproveError, } = useApprove(rich5WorldConfig.address, parseEther(String(Number(investmentAmount) + 0.1) || "0"));
   const { register, isPending: isRegisterPending, isError: isRegisterError, data: registerTxHash } = useRegister(BigInt(referralCode), address as `0x${string}`, parseEther(investmentAmount || "0"));
   const { data: getDividendIncome } = useGetDividendIncome(userId as bigint);
   const {claimLevelIncome } = useClaimLevelDividend()
