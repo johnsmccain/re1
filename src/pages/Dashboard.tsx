@@ -287,7 +287,7 @@ const Dashboard = () => {
                 disabled={Number(parseEther(investmentAmount || "0")) === 0 || isAllowed || maxLevel}
                 className={`w-full py-2 rounded-lg text-base max-sm:text-xs font-semibold bg-primary ${Number(parseEther(investmentAmount || "0")) === 0 || isApprovePending || isRegisterPending || isUpgradePending || isAllowed || maxLevel ? "outline-none opacity-50 cursor-not-allowed " : isUpgradeError || isRegisterError ? "outline-none  bg-red-500 text-white" : "text-white cursor-pointer"}`}
               >
-                {isApprovePending || isRegisterPending || isUpgradePending || isAllowed ? <span className="animate-pulse transition-all ease-in-out">Proccessing...</span> : maxLevel ? "Max Level" : `Approve ${investmentAmount} USDT`}
+                {isApprovePending || isRegisterPending || isUpgradePending || isAllowed ? <span className="animate-pulse transition-all ease-in-out text-white">Processing...</span> : maxLevel ? "Max Level" : `Approve ${investmentAmount} USDT`}
               </button>
 
               <div className="flex bg-[#021d18] rounded-md p-2 justify-between max-sm:text-xs">
