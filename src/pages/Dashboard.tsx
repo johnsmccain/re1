@@ -1,26 +1,30 @@
 import { useAccount, useWaitForTransactionReceipt } from "wagmi"
 import {
   useCheckPoolEligibility,
-  useClaimDividen,
-  useGetDividendIncome,
+  // useGetDividendIncome,
   useRegister,
   useUpgrade,
   useUserAvailableToClaim,
   useUserId,
-  useUserInfo,
   useUserMissedIncome,
   useAvailableLevelIncomeToClaim,
-  useClaimLevelDividend
+  useClaimLevelDividend,
+  useUserInfo
 } from "../hooks/useContract";
 import { useEffect, useState } from "react";
 import { useApprove } from "../hooks/useERC20Contract";
 import { formatEther, parseEther } from "viem";
-import { calculateIncome, parseUserInfo } from "../utils/helper";
+import {  parseUserInfo } from "../utils/helper";
 import toast from "react-hot-toast";
 // import { convertTimestampToDate } from "../utils";
 import { rich5WorldConfig } from "../abi";
 import { readContract } from "wagmi/actions";
 import { config } from "../utils/wagmi";
+import { useUserIncomeDetails } from "../hooks/contracts/useUserIncomeDetails";
+import { useTotalTeamCount } from "../hooks/contracts/useTotalTeamCount";
+import { useTotalTeamBiz } from "../hooks/contracts/useTotalTeamBiz";
+import { useGetAutoPoolIncome } from "../hooks/contracts/useDividendIncome";
+import { useClaimAutoPool } from "../hooks/contracts/useClaimAutoPool";
 // import { useClaimLevelIncome } from "../hooks/contracts/useClaimDividend";
 const packages = ["25", "50", "100", "200", "500", "1000", "2500", "5000"]
 
@@ -34,16 +38,21 @@ const Dashboard = () => {
   // const parsedUserInfo = parseUserInfo([userInfo][0] || [])
   const [parsedUserInfo, setParsedUserInfo] = useState(parseUserInfo([userInfo][0] as any || []));
   const [packageId, setPackageId] = useState<number>((Number(parsedUserInfo.level)));
-  const [referralIncome, setReferralIncome] = useState<number>(0);
   const [maxLevel, setMaxLevel] = useState((Number(parsedUserInfo.level)) === 12)
 
   // console.log(maxLevel)
   const [investmentAmount, setInvestmentAmount] = useState<string>(maxLevel ? packages[packageId - 1] : packages[packageId]);
   const { approve, isPending: isApprovePending, data: approveTxHash, isError: isApproveError, } = useApprove(rich5WorldConfig.address, parseEther(String(Number(investmentAmount) + 0.1) || "0"));
   const { register, isPending: isRegisterPending, isError: isRegisterError, data: registerTxHash } = useRegister(BigInt(referralCode), address as `0x${string}`, parseEther(investmentAmount || "0"));
-  const { data: getDividendIncome } = useGetDividendIncome(userId as bigint);
+
+  const { data: getAutoPoolIncome } = useGetAutoPoolIncome(userId as bigint)
   const {claimLevelIncome } = useClaimLevelDividend()
+  const { data: userIncomeDetails } = useUserIncomeDetails(userId as bigint)
+  const { data: totalTeamCount } = useTotalTeamCount(userId as bigint)
+  const { data: totalTeamBiz } = useTotalTeamBiz(userId as bigint)
+  const { claimAutoPool, data: claimAutoPoolTxHash } = useClaimAutoPool()
   // console.log(packages, packageId, packages[packageId])
+
   const { data: getMissedIncome } = useUserMissedIncome(userId as bigint)
   // const { data: userPoolRank } = useUserPoolRank(userId as bigint)
   const { data: checkPoolEligibility } = useCheckPoolEligibility(userId as bigint)
@@ -54,7 +63,6 @@ const Dashboard = () => {
   const { data: userAvailableToClaim4 } = useUserAvailableToClaim(userId as bigint, BigInt("3"))
   const { data: userAvailableToClaim5 } = useUserAvailableToClaim(userId as bigint, BigInt("4"))
 
-  const { claimDividend, data: claimDividendTxHash } = useClaimDividen()
   // Get the full URL
   const getfullURL = `${window.location.origin}?referral=${parsedUserInfo.id}`;
   // console.log(getDividendIncome)
@@ -103,7 +111,7 @@ const Dashboard = () => {
     hash: approveTxHash,
   })
   const { isFetched: claimDividendWaitForTransactionReceipt } = useWaitForTransactionReceipt({
-    hash: claimDividendTxHash,
+    hash: claimAutoPoolTxHash,
   })
 
   const [currentLevel, setCurrentLevel,] = useState<number>(0)
@@ -196,7 +204,6 @@ const Dashboard = () => {
       setMaxLevel((Number(c.level)) === 12);
     })
 
-    setReferralIncome(calculateIncome(Number(formatEther(userInfo?.[7] as bigint || 0n)), Number(formatEther(BigInt(getMissedIncome?.toString() || "0")))))
   }, [registerWaitForTransactionReceipt, upgradeWaitForTransactionReceipt]);
 
   console.log(referralCode)
@@ -215,6 +222,7 @@ const Dashboard = () => {
       handleInvest()
     }
   }, [approveWaitForTransactionReceipt]);
+  const requiredTeamSizes = [4, 10, 20, 30, 40];
   // console.log(getDividendIncome)
   return (
     <div className="">
@@ -271,7 +279,7 @@ const Dashboard = () => {
 
               <div className="flex bg-[#021d18]  rounded-md p-2 justify-between max-sm:text-xs">
                 <p className="text-[#00ff03]">Total slot Purchased</p>
-                <p className="text-white">${formatEther(parsedUserInfo.totalDeposit)}</p>
+                {/* <p className="text-white">${formatEther(userInfo?.[9] as bigint)}</p> */}
               </div>
               <button
                 onClick={handleApprove}
@@ -288,21 +296,22 @@ const Dashboard = () => {
 
             </div>
           </div>
+          
           <div className="">
             <p className="text-2xl  max-sm:text-lg py-4 text-white font-bold">My team</p>
             <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3 max-sm:text-xs ">
               <div className="flex max-sm:flex-col gap-3 sm:justify-around">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className=" font-semibold my-auto text-[#00ff03]" >Total income earned</p>
-                  <p className="text-white">${formatEther(userInfo?.[9] as bigint || 0n)}</p>
+                  <p className="text-white">${formatEther(userIncomeDetails?.[0] as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className=" font-semibold my-auto  text-[#00ff03]">Total team members</p>
-                  <p className="text-white">{Number(userInfo?.[8] as bigint || 0n)}</p>
+                  <p className="text-white">{Number(totalTeamCount as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className=" font-semibold my-auto  text-[#00ff03]">Total team business</p>
-                  <p className="text-white">${formatEther(userInfo?.[7] as bigint || 0n)}</p>
+                  <p className="text-white">${formatEther(totalTeamBiz as bigint || 0n)}</p>
                 </div>
 
               </div>
@@ -343,7 +352,7 @@ const Dashboard = () => {
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className=" font-semibold my-auto text-[#00ff03]">Referral income earned:</p>
-                  <p className="text-white">${referralIncome}</p>
+                  <p className="text-white">${formatEther(userIncomeDetails?.[2] as bigint || 0n)}</p>
                 </div>
               </div>
             </div>
@@ -355,7 +364,7 @@ const Dashboard = () => {
               <div className="flex flex-col gap-3 max-sm:text-xs">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className=" font-semibold my-auto text-[#00ff03] ">Total level income earned:</p>
-                  <p className="text-white">${formatEther(userInfo?.[11] as bigint || 0n)}</p>
+                  <p className="text-white">${formatEther(userIncomeDetails?.[1] as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                   <p className=" font-semibold my-auto text-[#00ff03] ">Available level income: <span className="text-[#ffffff]">${formatEther(availableLevelIncomeToClaim || 0n)}</span></p>
@@ -385,20 +394,19 @@ const Dashboard = () => {
             </div>
             <div className="bg-[#021d18] bg-opacity-50 w-full rounded-lg py-5 px-3 max-sm:text-xs">
               <div className="flex flex-col gap-3">
-                {getDividendIncome?.map((poolBalance: any, index: number) => (
+                {getAutoPoolIncome?.map((poolBalance: any, index: number) => (
 
                   <div key={index} className="bg-[#021d18]  flex justify-between p-2 rounded-lg">
                     <p className=" font-semibold my-auto text-[#00ff03]">Pool {index + 1}</p>
                     <p className="text-gray-300">
                       ${formatEther(poolBalance)} / ${userAvailableToClaimed && formatEther(userAvailableToClaimed[index] as any || "0")}
                     </p>
-                    <button
-                      onClick={() => checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0 ? claimDividend(BigInt(index)) : null}
-                      disabled={checkPoolEligibility && Number(checkPoolEligibility[index]) === 0}
-                      className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs"
-                    >
-                      {checkPoolEligibility && Number(checkPoolEligibility[index]) === 0 ? 'Not Eligible' : checkPoolEligibility && Number(checkPoolEligibility[index]) === 1 && userAvailableToClaimed && Number(formatEther(userAvailableToClaimed[index] as any || "0")) > 0 ? 'Claim' : 'Eligible'}
-                    </button>
+                    
+                    {
+                    Number(userId) > 1000 && Number(checkPoolEligibility &&checkPoolEligibility[index]) > 0 && index === 0 && Number(userInfo?.[6]) === requiredTeamSizes[index]? <button className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs" onClick={() => claimAutoPool(BigInt(index))}>Claim</button>: Number(userId) > 1000 && Number(checkPoolEligibility &&checkPoolEligibility[index]) > 0?
+                    <button className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs" >Eligible</button>:
+                    <button className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs" >Not Eligible</button>
+                    }
                   </div>
                 ))}
               </div>

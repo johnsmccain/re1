@@ -11,7 +11,7 @@ export const useRegister = (_ref: bigint, _newAcc: `0x${string}`, amt: bigint) =
             address: rich5WorldConfig.address as `0x${string}`,
             abi: rich5WorldConfig.abi,
             functionName: "register",
-            args: [_ref, _newAcc, amt]
+            args: [_ref, _newAcc, amt, "a", "b", "c"]
         });
         setTxHash(txHashx);
     };

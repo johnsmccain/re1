@@ -12,7 +12,7 @@ export function useDistributeDividend() {
         await writeContract({
             address: rich5WorldConfig.address as `0x${string}`,
             abi: rich5WorldConfig.abi,
-            functionName: 'distributeDividend',
+            functionName: 'distributeDividend' as any,
         });
         setIsLoading(false);
     };
