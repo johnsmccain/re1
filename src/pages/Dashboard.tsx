@@ -33,8 +33,8 @@ const Dashboard = () => {
   const [referralCode, setReferralCode] = useState("1000");
   const { address } = useAccount()
   const { upgrade: upgradeLevel, isPending: isUpgradePending, isError: isUpgradeError, data: upgradeTxHash } = useUpgrade();
-  // const { data: userId } = useUserId(address as `0x${string}`)
-  const userId = 1010n
+  const { data: userId } = useUserId(address as `0x${string}`)
+  // const userId = 1010n
   const { data: userInfo } = useUserInfo(userId as bigint)
   // const parsedUserInfo = parseUserInfo([userInfo][0] || [])
   const [parsedUserInfo, setParsedUserInfo] = useState(parseUserInfo([userInfo][0] as any || []));
