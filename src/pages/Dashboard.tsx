@@ -33,7 +33,8 @@ const Dashboard = () => {
   const [referralCode, setReferralCode] = useState("1000");
   const { address } = useAccount()
   const { upgrade: upgradeLevel, isPending: isUpgradePending, isError: isUpgradeError, data: upgradeTxHash } = useUpgrade();
-  const { data: userId } = useUserId(address as `0x${string}`)
+  // const { data: userId } = useUserId(address as `0x${string}`)
+  const userId = 1010n
   const { data: userInfo } = useUserInfo(userId as bigint)
   // const parsedUserInfo = parseUserInfo([userInfo][0] || [])
   const [parsedUserInfo, setParsedUserInfo] = useState(parseUserInfo([userInfo][0] as any || []));
@@ -307,11 +308,11 @@ const Dashboard = () => {
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className=" font-semibold my-auto  text-[#00ff03]">Total team members</p>
-                  <p className="text-white">{Number(totalTeamCount as bigint || 0n)}</p>
+                  <p className="text-white">{Number(userId) > 1000 ? Number(totalTeamCount as bigint || 0n)/2 : 0}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className=" font-semibold my-auto  text-[#00ff03]">Total team business</p>
-                  <p className="text-white">${formatEther(totalTeamBiz as bigint || 0n)}</p>
+                  <p className="text-white">${Number(userId) > 1000 ? formatEther(totalTeamBiz/2n as bigint || 0n) : 0}</p>
                 </div>
 
               </div>
@@ -382,7 +383,7 @@ const Dashboard = () => {
               <div className="flex flex-col gap-3">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg max-sm:text-xs">
                   <p className=" font-semibold my-auto text-[#00ff03]">Total autopool income earned:</p>
-                  <p className="text-white">${formatEther(userInfo?.[7] as bigint || 0n)}</p>
+                  <p className="text-white">${formatEther(getAutoPoolIncome?.[0] as bigint || 0n) + formatEther(getAutoPoolIncome?.[1] as bigint || 0n) +formatEther(getAutoPoolIncome?.[2] as bigint || 0n) + formatEther(getAutoPoolIncome?.[3] as bigint || 0n) + formatEther(getAutoPoolIncome?.[4] as bigint || 0n)}</p>
                 </div>
               </div>
             </div>
