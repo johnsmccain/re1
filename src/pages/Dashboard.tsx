@@ -404,7 +404,7 @@ const Dashboard = () => {
                     </p>
                     
                     {
-                    Number(userId) > 1000 && Number(checkPoolEligibility &&checkPoolEligibility[index]) > 0 && index === 0 && Number(userInfo?.[6]) === requiredTeamSizes[index]? <button className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs" onClick={() => claimAutoPool(BigInt(index))}>Claim</button>: Number(userId) > 1000 && Number(checkPoolEligibility &&checkPoolEligibility[index]) > 0?
+                    Number(userId) > 1000 && Number(checkPoolEligibility &&checkPoolEligibility[index]) > 0 && index === 0 && Number(userInfo?.[6]) >= requiredTeamSizes[index]? <button className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs" onClick={() => claimAutoPool(BigInt(index))}>Claim</button>: Number(userId) > 1000 && Number(checkPoolEligibility &&checkPoolEligibility[index]) > 0?
                     <button className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs" >Eligible</button>:
                     <button className="rounded-lg border-2 border-primary text-gray-300 py-1 px-3 font-semibold max-sm:text-xs" >Not Eligible</button>
                     }
