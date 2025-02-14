@@ -383,7 +383,7 @@ const Dashboard = () => {
               <div className="flex flex-col gap-3">
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg max-sm:text-xs">
                   <p className=" font-semibold my-auto text-[#00ff03]">Total autopool income earned:</p>
-                  <p className="text-white">${formatEther(getAutoPoolIncome?.[0] as bigint || 0n) + formatEther(getAutoPoolIncome?.[1] as bigint || 0n) +formatEther(getAutoPoolIncome?.[2] as bigint || 0n) + formatEther(getAutoPoolIncome?.[3] as bigint || 0n) + formatEther(getAutoPoolIncome?.[4] as bigint || 0n)}</p>
+                  <p className="text-white">${Number(formatEther(getAutoPoolIncome?.[0] as bigint || 0n)) + Number(formatEther(getAutoPoolIncome?.[1] as bigint || 0n)) + Number(formatEther(getAutoPoolIncome?.[2] as bigint || 0n)) + Number(formatEther(getAutoPoolIncome?.[3] as bigint || 0n)) + (formatEther(getAutoPoolIncome?.[4] as bigint || 0n))}</p>
                 </div>
               </div>
             </div>
