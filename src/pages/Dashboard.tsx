@@ -308,11 +308,11 @@ const Dashboard = () => {
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className=" font-semibold my-auto  text-[#00ff03]">Total team members</p>
-                  <p className="text-white">{Number(userId) > 1000 ? Number(totalTeamCount as bigint || 0n)/2 : 0}</p>
+                  <p className="text-white">{Number(userId) > 1000 && Number(totalTeamCount as bigint || 0n)}</p>
                 </div>
                 <div className="bg-[#021d18]  flex justify-between p-2 rounded-lg sm:w-[30%] px-3">
                   <p className=" font-semibold my-auto  text-[#00ff03]">Total team business</p>
-                  <p className="text-white">${Number(userId) > 1000 ? formatEther(totalTeamBiz && totalTeamBiz/2n as bigint || 0n) : 0}</p>
+                  <p className="text-white">${Number(userId) > 1000 && formatEther(totalTeamBiz && totalTeamBiz/2n as bigint || 0n)}</p>
                 </div>
 
               </div>
